@@ -115,7 +115,9 @@ def update_jobs(partition, total_cores, user):
             nice = NICE_VALUE_OVERUSE
         else:
             log("I am not overusing the grid! No need to be nice!")
-            nice = NICE_VALUE_FAIR_USE
+            max_penalty = (NICE_VALUE_OVERUSE - NICE_VALUE_FAIR_USE) / 2
+            running_jobs_penalty = max_penalty * my_usage.cores / fair_share
+            nice = NICE_VALUE_FAIR_USE + running_jobs_penalty
         set_pending_array_jobs_nice(partition, user, nice)
 
 
